@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "apipod": {
+      "type": "http",
+      "url": "https://api.apipod.ai/mcp"
+    }
+  }
+}

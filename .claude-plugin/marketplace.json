@@ -1,0 +1,40 @@
+{
+  "name": "apipod-agent-plugins",
+  "description": "APIPod plugins for AI assistants: image and video generation, cost estimates and balance through the APIPod MCP server.",
+  "version": "0.1.0",
+  "owner": {
+    "name": "GeniusPath",
+    "url": "https://www.apipod.ai"
+  },
+  "plugins": [
+    {
+      "name": "apipod",
+      "source": "./apipod",
+      "description": "Generate images and video inside the conversation with Nano Banana, Seedream, FLUX, GPT Image, Seedance, Kling, Gemini Omni and more, through one APIPod account. Quotes every generation before it runs; failed jobs are refunded. After installing, run /mcp and sign in to APIPod.",
+      "version": "0.1.0",
+      "author": {
+        "name": "GeniusPath",
+        "url": "https://www.apipod.ai"
+      },
+      "homepage": "https://www.apipod.ai",
+      "repository": "https://github.com/geniuspath/apipod-agent-plugins",
+      "license": "Apache-2.0",
+      "keywords": [
+        "ai-image-generator",
+        "ai-video-generator",
+        "image-generation",
+        "video-generation",
+        "text-to-image",
+        "text-to-video",
+        "image-to-video",
+        "image-editing",
+        "seedance",
+        "kling",
+        "nano-banana",
+        "seedream",
+        "apipod"
+      ],
+      "category": "creative"
+    }
+  ]
+}
