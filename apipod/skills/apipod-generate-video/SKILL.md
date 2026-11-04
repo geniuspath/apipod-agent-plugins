@@ -35,7 +35,7 @@ Tell the user this adds one image generation before the video; skip it when they
 3. One `generate_video` call:
    - `model`, `prompt` (chronological: opening frame → action → camera → environment motion → audio → ending; exclusions last).
    - `duration`, `aspect_ratio`, `resolution` from the model's enums.
-   - `image_urls` for first frame / first+last / references; `extras.video_urls`, `extras.audio_urls` when the model supports them.
+   - `image_urls` for first frame / first+last / references — public HTTPS URLs or inline `data:...;base64,...`; `extras.video_urls`, `extras.audio_urls` when the model supports them.
    - `extras` for `generate_audio`, `camera_fixed`, `seed`, draft flags, Kling multi-shot fields, …
 4. `check_job({ job_id })` every 10 s. Video takes 1–5 minutes; say so once, then keep polling.
 5. Deliver the URL, the final `cost_usd`, and a plain note on identity, motion, timing, audio sync. One take per request — propose a revision, run it only on a yes.

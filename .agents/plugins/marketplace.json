@@ -1,7 +1,7 @@
 {
   "name": "apipod-agent-plugins",
   "description": "APIPod plugins for Codex: image and video generation, cost estimates and balance through the APIPod MCP server.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "owner": {
     "name": "GeniusPath",
     "url": "https://www.apipod.ai"
@@ -11,7 +11,7 @@
       "name": "apipod",
       "source": "./apipod",
       "description": "Generate images and video inside the conversation with Nano Banana, Seedream, FLUX, GPT Image, Seedance, Kling, Gemini Omni and more, through one APIPod account. Quotes every generation before it runs; failed jobs are refunded.",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "author": {
         "name": "GeniusPath",
         "url": "https://www.apipod.ai"

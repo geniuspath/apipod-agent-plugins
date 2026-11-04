@@ -25,7 +25,7 @@ Read [shared rules](../apipod/references/shared-rules.md) once per task. If APIP
    - `model`, `prompt` (English, one scene, concrete nouns, lighting, lens or medium, composition).
    - `aspect_ratio` when the host or platform implies one (`1:1` social, `16:9` thumbnail, `9:16` story).
    - `n` only when the user asked for variants; each costs separately.
-   - `image_urls` for references or edit sources (public HTTPS URLs).
+   - `image_urls` for references or edit sources — public HTTPS URLs, or inline `data:image/...;base64,...` (the server stores those and swaps in a permanent URL).
    - `extras` for everything else from `get_model_params`: `resolution`, `quality`, `seed`, `output_format`, `background`, …
 4. `check_job({ job_id })` every 3–5 s until `completed` or `failed`.
 5. Show the result URLs, report `cost_usd`, and name what is off. Propose one targeted change; generate again only on a yes.

@@ -11,7 +11,8 @@ An edit is a two-part instruction: what changes, and what must not. Most bad edi
 
 ## Identify the source
 
-- The image must be a public HTTPS URL. If the user attached a file instead, say that APIPod takes URLs over MCP and ask for a link (or have them upload it in the console and paste the returned URL). Never send base64.
+- The source can be a public HTTPS URL, a `data:image/...;base64,...` URI, or a bare base64 payload. Inline data is stored on APIPod before the request is logged, so the result and the job record reference a permanent URL. Prefer a URL or a host-provided file link; base64 for a large photo is expensive to pass through the conversation.
+- If the user attached a file and no link is available, say you can take the raw image data and ask them how they would like to provide it. Do not tell them APIPod requires a URL — it does not.
 - If several images are given, the first is the source unless the user says otherwise.
 
 ## Choose the model

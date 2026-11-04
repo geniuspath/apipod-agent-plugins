@@ -25,7 +25,10 @@ Read once when an APIPod workflow starts; reuse across the focused skills in the
 
 ## References and inputs
 
-- Reference images must be public HTTPS URLs. If the user attached a file, upload it to a public location first or ask for a URL; APIPod does not accept base64 through MCP.
+- `image_urls`, `video_urls` and `audio_urls` accept three forms: a public HTTPS URL, a `data:<mime>;base64,<payload>` URI, or a bare base64 payload with no prefix. Inline payloads are stored to APIPod object storage before the request is logged, so `check_job` and the console always show a permanent URL regardless of what was sent. Everything downstream — job logs, worker retries, cost reports — sees only that URL.
+- Prefer a URL when one exists: it costs nothing to pass. Inline base64 travels through the conversation as text and is billed as tokens on both sides, so keep it to small images. Never paste a multi-megabyte photo as base64 when the user can hand you a link or a file the host already exposes.
+- A bare payload must be the raw media itself. The server identifies it by decoding the header and matching a known image/video/audio container; anything else — a token, a JWT, base64 of an HTML page — is passed through unchanged and will fail at the provider. Do not hand-encode documents.
+- If the user attached a file and the host exposes a download URL for it (ChatGPT file params do), send that URL rather than re-encoding the bytes.
 - `image_urls` carries references. The first entry is the primary (first frame for video, source for edits) unless the model's parameters say otherwise.
 
 ## Delivery

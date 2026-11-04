@@ -1,7 +1,7 @@
 {
   "name": "apipod",
   "description": "Generate images and video inside the conversation with Nano Banana, Seedream, FLUX, GPT Image, Seedance, Kling, Gemini Omni and more, through one APIPod account. Quotes every generation before it runs; failed jobs are refunded. After installing, run /mcp and sign in to APIPod.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": {
     "name": "GeniusPath",
     "email": "support@apipod.ai",

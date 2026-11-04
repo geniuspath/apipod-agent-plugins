@@ -2,7 +2,7 @@
   "id": "apipod",
   "name": "APIPod",
   "description": "Generate and edit images and video with Nano Banana, Seedream, GPT Image, Seedance and Kling through one APIPod account.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "configSchema": {
     "type": "object",
     "additionalProperties": false,
