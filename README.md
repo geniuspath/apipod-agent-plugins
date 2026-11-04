@@ -82,19 +82,30 @@ Live catalog: `https://api.apipod.ai/mcp/catalog`. Prices: `https://www.apipod.a
 
 ## Skills
 
-Two kinds: **focused** skills do one thing well; **workflow** skills carry the judgement that turns several generations into a usable deliverable.
+Two kinds: **focused** skills do one thing well; **workflow** skills carry the judgement that turns several generations into a usable deliverable. `apipod` routes between them.
 
 | Skill | Kind | When it activates |
 | --- | --- | --- |
 | `apipod` | router | Mixed requests, model questions, balance, "not connected" guidance |
+| `apipod-setup` | onboarding | First run after install: connection check, one image, one clip |
 | `apipod-generate-image` | focused | One image: generate or edit |
+| `apipod-edit-image` | focused | Change an existing image, keep the subject |
 | `apipod-generate-video` | focused | One clip: text / first frame / references |
+| `apipod-vertical-video` | focused | 9:16 clips for Reels, TikTok, Shorts |
 | `apipod-estimate-cost` | focused | Price questions, budgets, model comparison — never generates |
-| `apipod-product-shoot` | workflow | One product → a consistent set of marketing shots (hero, detail, lifestyle, scale) |
-| `apipod-short-film` | workflow | Multi-shot sequence: storyboard, per-shot quotes, then generate in order |
+| `apipod-budget` | focused | Pick the cheapest option that meets the brief; never generates |
+| `apipod-troubleshoot` | focused | 401, sign-in loop, stuck job, rejected parameter |
+| `apipod-product-shoot` | workflow | One product → a consistent set of shots (hero, detail, lifestyle, scale) |
+| `apipod-short-film` | workflow | Multi-shot sequence: storyboard, per-shot quotes, generate in order |
+| `apipod-plan-video` | workflow | Storyboard and price a video without producing it |
 | `apipod-ad-variations` | workflow | One approved base → a variant matrix along a single axis |
-| `apipod-generate-video` | One clip: text / first frame / references, reference-first workflow |
-| `apipod-estimate-cost` | Price questions, budgets, model comparison — never generates |
+| `apipod-ugc-ad` | workflow | Product → persona shot → short clip, creator format |
+
+Deliberately absent: voiceover, music, sound effects, voice cloning, characters,
+avatars and long-video cutting. APIPod's MCP surface is seven tools — image,
+video, pricing and balance — and a skill that promises a tool the server does
+not expose is worse than no skill. Speech models appear in `list_models`, but
+`generate_speech` has not shipped yet.
 
 The skills enforce one rule above all: **one request = one paid attempt**. Retries, comparisons and "fixes" that generate again need an explicit yes.
 
