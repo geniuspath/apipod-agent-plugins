@@ -1,0 +1,60 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "apipod",
+  "version": "0.2.0",
+  "description": "Generate images and video inside the conversation with Nano Banana, Seedream, FLUX, GPT Image, Seedance, Kling, Gemini Omni and more, through one APIPod account.",
+  "author": {
+    "name": "GeniusPath",
+    "email": "support@apipod.ai",
+    "url": "https://www.apipod.ai"
+  },
+  "homepage": "https://www.apipod.ai",
+  "repository": "https://github.com/geniuspath/apipod-agent-plugins",
+  "license": "Apache-2.0",
+  "keywords": [
+    "ai-image-generator",
+    "ai-video-generator",
+    "image-generation",
+    "video-generation",
+    "text-to-image",
+    "text-to-video",
+    "image-to-video",
+    "image-editing",
+    "seedance",
+    "kling",
+    "nano-banana",
+    "seedream",
+    "apipod"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "APIPod",
+        "shortDescription": "AI image and video generation",
+        "longDescription": "Generate images and video without leaving the chat. APIPod connects ChatGPT and Codex to the leading image models (Nano Banana, Seedream, FLUX, GPT Image) and video models (Seedance, Kling, Gemini Omni, Wan, MiniMax) through one account. Ask in plain language, review the quote, and get permanent URLs back. Every generation is priced before it runs and refunded automatically if it fails.",
+        "developerName": "GeniusPath",
+        "category": "Creativity",
+        "capabilities": [
+          "Generate images from text",
+          "Edit images with reference photos",
+          "Generate video from text or a first frame",
+          "Animate a still image",
+          "Quote a generation before running it",
+          "Check account balance"
+        ],
+        "websiteURL": "https://www.apipod.ai",
+        "supportURL": "https://www.apipod.ai/contact",
+        "privacyPolicyURL": "https://www.apipod.ai/privacy",
+        "termsOfServiceURL": "https://www.apipod.ai/terms",
+        "defaultPrompt": [
+          "Generate a product photo of my headphones on a marble surface",
+          "Make a 5-second video of waves at sunset",
+          "How much would a 10-second 1080p Seedance clip cost?"
+        ],
+        "logo": "./openai/assets/logo.png",
+        "composerIcon": "./openai/assets/logo.png",
+        "brandColor": "#111111"
+      }
+    }
+  }
+}

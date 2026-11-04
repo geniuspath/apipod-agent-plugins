@@ -1,0 +1,17 @@
+{
+  "name": "apipod-agent-plugins",
+  "owner": {
+    "name": "GeniusPath",
+    "email": "support@apipod.ai"
+  },
+  "metadata": {
+    "description": "APIPod plugins for Grok Bot and Cursor"
+  },
+  "plugins": [
+    {
+      "name": "apipod",
+      "source": "./apipod",
+      "description": "Generate and edit images and video with Nano Banana, Seedream, GPT Image, Seedance and Kling through one APIPod account."
+    }
+  ]
+}

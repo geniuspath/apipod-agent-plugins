@@ -1,0 +1,31 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "apipod",
+  "displayName": "APIPod",
+  "version": "0.2.0",
+  "description": "Generate and edit images and video with Nano Banana, Seedream, GPT Image, Seedance and Kling through one APIPod account.",
+  "author": {
+    "name": "GeniusPath",
+    "email": "support@apipod.ai"
+  },
+  "homepage": "https://www.apipod.ai",
+  "repository": "https://github.com/geniuspath/apipod-agent-plugins",
+  "license": "Apache-2.0",
+  "keywords": [
+    "apipod",
+    "ai-image-generator",
+    "ai-video-generator",
+    "image-generation",
+    "video-generation",
+    "mcp"
+  ],
+  "category": "productivity",
+  "tags": [
+    "creative-media",
+    "images",
+    "video",
+    "mcp"
+  ],
+  "icon": "./assets/logo.png",
+  "mcpServers": "./mcp.json"
+}
