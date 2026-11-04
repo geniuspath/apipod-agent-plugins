@@ -104,31 +104,59 @@ The skills enforce one rule above all: **one request = one paid attempt**. Retri
 .claude-plugin/marketplace.json      Claude Code / Claude web marketplace manifest
 .agents/plugins/marketplace.json     Codex marketplace manifest
 .cursor-plugin/marketplace.json      Cursor + Grok Bot marketplace manifest
-apipod/
+apipod/                              ← the plugin; also the OpenAI ZIP root
+  plugin.json                        Portable manifest (agent-plugins.org) + OpenAI listing & review cases
+  mcp.json                           MCP server entry for Cursor / Codex (general /mcp)
+  .mcp.json                          MCP server entry for Claude Code
   .claude-plugin/plugin.json         Claude plugin manifest
   .cursor-plugin/plugin.json         Cursor / Grok Bot plugin manifest
-  plugin.json                        Codex plugin manifest (agent-plugins.org schema)
   openclaw.plugin.json               OpenClaw plugin manifest (server + skills)
-  .mcp.json                          MCP server entry for Claude Code / Codex
-  mcp.json                           MCP server entry for Cursor (streamable-http)
-  assets/logo.png                    Plugin icon used by Cursor and Codex
-  skills/apipod/SKILL.md             Router skill + references/shared-rules.md
-  skills/apipod-generate-image/
-  skills/apipod-generate-video/
-  skills/apipod-estimate-cost/
+  assets/logo.png                    Plugin icon
+  skills/                            7 skills (see above)
 openai/
-  mcp.json                           ChatGPT surface (record only; the portal binds the server)
-  plugin.openai.json                 Listing + review cases for the OpenAI portal
+  mcp.json                           ChatGPT surface: /mcp/chatgpt + OAuth DCR declaration; overlaid into the ZIP
+  plugin.openai.json                 Legacy Codex-format copy of the listing (kept for the compatibility path)
+scripts/
+  build-openai-zip.mjs               Validate against portal rules, then write dist/apipod-<version>.zip
+  check-versions.mjs                 Fail if any manifest's version drifts
 ```
 
 Every manifest above points at the same remote server. The host decides which
 file it reads; nothing here runs locally.
 
+## Publish to the OpenAI plugin directory
+
+The directory is shared by ChatGPT and Codex, and takes one ZIP:
+
+```bash
+node scripts/build-openai-zip.mjs          # dist/apipod-0.2.0.zip
+node scripts/build-openai-zip.mjs --check  # validate only
+```
+
+The script stages `plugin.json`, `skills/`, `assets/` from `apipod/` and
+`openai/mcp.json` as the ZIP's `mcp.json`, and refuses to build when a portal
+rule would reject the upload (listing field limits, exactly 5 positive + 3
+negative review cases, missing icon, hooks, a `clientSecret`, …).
+
+What the portal then needs from the server side, in order:
+
+1. **Dynamic client registration on.** `OAUTH_PROVIDER_DYNAMIC_REGISTRATION_ENABLED=true`
+   so `/.well-known/oauth-authorization-server` advertises `registration_endpoint`.
+2. **Domain verification.** Serve the token the portal shows as plain text at
+   `https://api.apipod.ai/.well-known/openai-apps-challenge`.
+3. **Connect and scan.** Under *MCPs* → *Connect*, sign in with a reviewer
+   account; the portal runs the 7 tools and reports findings.
+4. **Demo recording.** `review.demo_recording_url` in `plugin.json` must be a
+   reviewer-accessible walkthrough before submission.
+
+After the first approval, MCP tool changes ship with the server and are
+rescanned automatically; only `plugin.json` and `skills/` changes need a new ZIP.
+
 ## Versioning
 
-One version string, repeated in all six manifests. Bump them together before
-tagging; `claude plugin validate .` and `claude plugin validate apipod` are the
-two local checks.
+One version string across all seven manifests; `node scripts/check-versions.mjs`
+fails on drift. Bump together before tagging. CI runs that check plus
+`claude plugin validate` for the Claude layout and the OpenAI portal checks.
 
 ## Pricing
 

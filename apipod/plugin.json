@@ -53,9 +53,66 @@
           "Make a 5-second video of waves at sunset",
           "How much would a 10-second 1080p Seedance clip cost?"
         ],
-        "logo": "./openai/assets/logo.png",
-        "composerIcon": "./openai/assets/logo.png",
+        "logo": "./assets/logo.png",
+        "composerIcon": "./assets/logo.png",
         "brandColor": "#111111"
+      },
+      "onboardingSkill": "./skills/apipod/SKILL.md",
+      "review": {
+        "commerce": false,
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Text-to-image with the default model: the assistant lists image models, picks a Nano Banana model, calls generate_image once, polls check_job and returns the URL with the final cost.",
+              "prompt": "Generate a studio photo of a matte black water bottle on wet slate, soft top light.",
+              "tools_triggered": "list_models, generate_image, check_job",
+              "expected_behavior": "One generate_image call; the assistant polls check_job until completed and shows the image URL and cost_usd. It does not generate a second image without being asked."
+            },
+            {
+              "description": "Video with a cost check: the assistant estimates before generating because video is expensive and the user gave no budget.",
+              "prompt": "Make a 5-second 720p video of ocean waves at sunset with native audio.",
+              "tools_triggered": "list_models, get_model_params, estimate_cost, generate_video, check_job",
+              "expected_behavior": "estimate_cost runs before generate_video and the price is shown; one generate_video call; the assistant polls check_job every ~10 s and returns the video URL."
+            },
+            {
+              "description": "Cost-only question: the assistant quotes without generating.",
+              "prompt": "How much would a 10-second 1080p Seedance clip cost me?",
+              "tools_triggered": "list_models, get_model_params, estimate_cost",
+              "expected_behavior": "estimate_cost returns estimated_usd and sufficient; no generate_* call is made."
+            },
+            {
+              "description": "Image edit with a reference URL.",
+              "prompt": "Here is my product photo https://example.com/bottle.jpg — change the background to a beach at golden hour and keep the bottle unchanged.",
+              "tools_triggered": "list_models, get_model_params, generate_image, check_job",
+              "expected_behavior": "generate_image is called with image_urls containing the reference and a prompt that states what must stay; result URL returned."
+            },
+            {
+              "description": "Balance check.",
+              "prompt": "What's my APIPod balance?",
+              "tools_triggered": "get_balance",
+              "expected_behavior": "get_balance is called and balance_usd is reported. On the ChatGPT surface no top-up link is shown; the assistant points to the website if the user asks how to add funds."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Unauthorized retry: after a result the user says it looks off, without asking for another one.",
+              "prompt": "Hmm, the lighting is a bit flat."
+            },
+            {
+              "description": "Unknown model: the user names a model APIPod does not list.",
+              "prompt": "Use Midjourney v7 to make a poster."
+            },
+            {
+              "description": "Insufficient balance.",
+              "prompt": "Generate a 30-second 1080p cinematic clip."
+            }
+          ]
+        },
+        "commerce_description": "APIPod does not sell products or process payments inside the plugin. Generations are billed to the user's prepaid APIPod balance, topped up on the APIPod website.",
+        "demo_recording_url": "https://www.apipod.ai/agent"
+      },
+      "publication": {
+        "release_notes": "Initial release: image generation and editing, video generation, cost estimates and balance via the APIPod MCP server."
       }
     }
   }

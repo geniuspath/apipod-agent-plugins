@@ -1,0 +1,22 @@
+name: Validate plugin
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # OpenAI portal rules: listing limits, 5+3 review cases, mcp.json auth, skill frontmatter
+      - run: node scripts/build-openai-zip.mjs --check
+      # Claude marketplace + plugin manifests
+      - run: npx -y @anthropic-ai/claude-code plugin validate .
+      - run: npx -y @anthropic-ai/claude-code plugin validate apipod
+      # Every manifest must parse, and the version must match across all of them
+      - run: node scripts/check-versions.mjs
