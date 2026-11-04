@@ -19,6 +19,9 @@
     "skills/apipod",
     "skills/apipod-generate-image",
     "skills/apipod-generate-video",
-    "skills/apipod-estimate-cost"
+    "skills/apipod-estimate-cost",
+    "skills/apipod-product-shoot",
+    "skills/apipod-short-film",
+    "skills/apipod-ad-variations"
   ]
 }

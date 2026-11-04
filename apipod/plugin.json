@@ -26,6 +26,8 @@
     "seedream",
     "apipod"
   ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
   "extensions": {
     "com.openai": {
       "interface": {

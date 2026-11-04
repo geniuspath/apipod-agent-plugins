@@ -82,10 +82,17 @@ Live catalog: `https://api.apipod.ai/mcp/catalog`. Prices: `https://www.apipod.a
 
 ## Skills
 
-| Skill | When it activates |
-| --- | --- |
-| `apipod` | Router: mixed requests, model questions, balance, "not connected" guidance |
-| `apipod-generate-image` | One image: generate or edit |
+Two kinds: **focused** skills do one thing well; **workflow** skills carry the judgement that turns several generations into a usable deliverable.
+
+| Skill | Kind | When it activates |
+| --- | --- | --- |
+| `apipod` | router | Mixed requests, model questions, balance, "not connected" guidance |
+| `apipod-generate-image` | focused | One image: generate or edit |
+| `apipod-generate-video` | focused | One clip: text / first frame / references |
+| `apipod-estimate-cost` | focused | Price questions, budgets, model comparison — never generates |
+| `apipod-product-shoot` | workflow | One product → a consistent set of marketing shots (hero, detail, lifestyle, scale) |
+| `apipod-short-film` | workflow | Multi-shot sequence: storyboard, per-shot quotes, then generate in order |
+| `apipod-ad-variations` | workflow | One approved base → a variant matrix along a single axis |
 | `apipod-generate-video` | One clip: text / first frame / references, reference-first workflow |
 | `apipod-estimate-cost` | Price questions, budgets, model comparison — never generates |
 
