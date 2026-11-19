@@ -112,6 +112,7 @@ The skills enforce one rule above all: **one request = one paid attempt**. Retri
 ## Layout
 
 ```
+server.json                          Official MCP Registry entry (published on tag)
 .claude-plugin/marketplace.json      Claude Code / Claude web marketplace manifest
 .agents/plugins/marketplace.json     Codex marketplace manifest
 .cursor-plugin/marketplace.json      Cursor + Grok Bot marketplace manifest
@@ -165,9 +166,76 @@ rescanned automatically; only `plugin.json` and `skills/` changes need a new ZIP
 
 ## Versioning
 
-One version string across all seven manifests; `node scripts/check-versions.mjs`
-fails on drift. Bump together before tagging. CI runs that check plus
-`claude plugin validate` for the Claude layout and the OpenAI portal checks.
+One version string across all eight manifests (including `server.json`);
+`node scripts/check-versions.mjs` fails on drift. Bump together before
+tagging. CI runs that check plus `claude plugin validate` for the Claude
+layout, the OpenAI portal checks, and `mcp-publisher validate` against the
+live registry schema.
+
+## Publish to the official MCP Registry
+
+`server.json` lists APIPod at `ai.apipod/apipod` as a remote-only
+`streamable-http` server. There is no package to publish — the registry holds
+metadata only, and the server already runs at `https://api.apipod.ai/mcp`.
+
+The registry is **not** populated by pull requests. Submitting `server.json`,
+a server directory, or a `data/seed.json` entry does not list a server even if
+the PR is merged; publication happens through the `mcp-publisher` CLI writing
+to the registry API.
+
+Pushing a tag does it:
+
+```bash
+# version in server.json and every manifest must equal the tag
+git tag v0.2.1 && git push origin v0.2.1
+```
+
+`.github/workflows/publish-mcp.yml` then verifies the tag against
+`server.json`, signs in with DNS auth, and publishes. The registry rejects a
+duplicate `name` + `version`, so every release needs a bump.
+
+### One-time setup
+
+1. **Apex TXT record** on `apipod.ai` (Cloudflare). It goes on the apex, not a
+   `_mcp-auth` selector:
+
+   ```
+   apipod.ai. IN TXT "v=MCPv1; k=ed25519; p=<public key>"
+   ```
+
+   Both values come from one key pair, kept out of the repo as `key.pem`
+   (`.gitignore` covers it):
+
+   ```bash
+   openssl genpkey -algorithm Ed25519 -out key.pem
+   # public key → the TXT record
+   openssl pkey -in key.pem -pubout -outform DER | tail -c 32 | base64
+   # private key, 64 hex chars → the MCP_PRIVATE_KEY secret
+   openssl pkey -in key.pem -noout -text \
+     | sed -n '/priv:/,/pub:/p' | sed '1d;$d' | tr -d ' :\n'
+   ```
+
+   The secret holds that **hex string**, not the PEM file — `mcp-publisher
+   login dns --private-key` takes hex. `/opt/homebrew/opt/openssl@3/bin/openssl`
+   is needed for `genpkey -algorithm Ed25519` if the system `openssl` is
+   LibreSSL.
+
+2. **`MCP_PRIVATE_KEY` repository secret** — the hex string above. If the key
+   is rotated, remove the old TXT record before adding the new one; a stale
+   record is tried first and fails verification.
+
+Local checks before tagging (no credentials needed):
+
+```bash
+brew install mcp-publisher
+mcp-publisher validate
+```
+
+Verify the listing:
+
+```bash
+curl "https://registry.modelcontextprotocol.io/v0.1/servers?search=ai.apipod/apipod"
+```
 
 ## Pricing
 

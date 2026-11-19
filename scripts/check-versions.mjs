@@ -13,6 +13,9 @@ const FILES = [
   "apipod/plugin.json",
   "apipod/openclaw.plugin.json",
   "openai/plugin.openai.json",
+  // Published to the official MCP Registry; it rejects a duplicate name+version,
+  // so a stale version here breaks publishing rather than just mislabelling.
+  "server.json",
 ];
 
 const seen = new Map();

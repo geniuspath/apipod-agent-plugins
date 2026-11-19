@@ -1,1 +1,6 @@
 dist/
+
+# MCP Registry DNS-auth signing key. Never commit; back it up somewhere safe
+# (1Password, etc.) — losing it means generating a new key and rotating the
+# apex TXT record, and a stale record must be removed first or auth fails.
+key.pem

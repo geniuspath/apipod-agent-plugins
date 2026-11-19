@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
 
+env:
+  # Pinned deliberately: the workflow verifies the release's Sigstore bundle,
+  # so bumping this is a conscious act rather than picking up whatever is latest.
+  MCP_PUBLISHER_VERSION: v1.8.9
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -20,3 +25,26 @@ jobs:
       - run: npx -y @anthropic-ai/claude-code plugin validate apipod
       # Every manifest must parse, and the version must match across all of them
       - run: node scripts/check-versions.mjs
+
+      # server.json is checked against the live registry schema on every PR.
+      # No credentials involved: `validate` only reads.
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+      - name: Download and verify mcp-publisher
+        run: |
+          set -euo pipefail
+          os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+          arch="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')"
+          archive="mcp-publisher_${os}_${arch}.tar.gz"
+          base_url="https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}"
+          curl --fail --location --silent --show-error --output "$archive" "$base_url/$archive"
+          curl --fail --location --silent --show-error --output "$archive.sigstore.json" "$base_url/$archive.sigstore.json"
+          cosign verify-blob \
+            --bundle "$archive.sigstore.json" \
+            --certificate-identity "https://github.com/modelcontextprotocol/registry/.github/workflows/release.yml@refs/tags/${MCP_PUBLISHER_VERSION}" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+            "$archive"
+          tar xzf "$archive" mcp-publisher
+          rm -f "$archive" "$archive.sigstore.json"
+      - name: Validate server.json
+        run: ./mcp-publisher validate
