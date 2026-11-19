@@ -1,9 +1,9 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "ai.apipod/apipod",
+  "name": "ai.apipod/mcp",
   "title": "APIPod",
   "description": "Generate, edit and animate images and videos with top models through one APIPod account.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "websiteUrl": "https://www.apipod.ai/agent",
   "icons": [
     {

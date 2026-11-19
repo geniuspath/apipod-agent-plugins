@@ -174,7 +174,7 @@ live registry schema.
 
 ## Publish to the official MCP Registry
 
-`server.json` lists APIPod at `ai.apipod/apipod` as a remote-only
+`server.json` lists APIPod at `ai.apipod/mcp` as a remote-only
 `streamable-http` server. There is no package to publish — the registry holds
 metadata only, and the server already runs at `https://api.apipod.ai/mcp`.
 
@@ -187,7 +187,7 @@ Pushing a tag does it:
 
 ```bash
 # version in server.json and every manifest must equal the tag
-git tag v0.2.2 && git push origin v0.2.2
+git tag v0.2.3 && git push origin v0.2.3
 ```
 
 `.github/workflows/publish-mcp.yml` then verifies the tag against
@@ -235,12 +235,24 @@ Verify the listing — `search` is a substring match on the name, so the full
 `namespace/name` never matches it. Use the path form, URL-encoding the slash:
 
 ```bash
-curl "https://registry.modelcontextprotocol.io/v0.1/servers/ai.apipod%2Fapipod/versions/latest"
+curl "https://registry.modelcontextprotocol.io/v0.1/servers/ai.apipod%2Fmcp/versions/latest"
 ```
 
 Before the first publish this returns `404`; afterwards it returns the record
-with `"name":"ai.apipod/apipod"`. To list every published version, drop
+with `"name":"ai.apipod/mcp"`. To list every published version, drop
 `/versions/latest`.
+
+Superseded names stay in the registry and are hidden from default listings by
+setting their status to `deleted`:
+
+```bash
+mcp-publisher status --status deleted --message "Renamed to ai.apipod/mcp" \
+  ai.apipod/apipod 0.2.2
+```
+
+`deprecated` is **not** the right status for a rename: it leaves the record in
+`version=latest` and keeps its `isLatest` flag, so both entries show up side by
+side.
 
 ## Pricing
 
