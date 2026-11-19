@@ -52,10 +52,13 @@ jobs:
 
       # DNS auth: the private key signs a challenge the registry checks against
       # the apex TXT record on apipod.ai (v=MCPv1; k=ed25519; p=...).
+      # The CLI does not read MCP_PRIVATE_KEY from the environment — it must be
+      # passed as a flag, so the secret goes through a shell variable. GitHub
+      # masks the value in logs, and `set -x` is not enabled.
       - name: Authenticate to MCP Registry
         env:
           MCP_PRIVATE_KEY: ${{ secrets.MCP_PRIVATE_KEY }}
-        run: ./mcp-publisher login dns --domain apipod.ai
+        run: ./mcp-publisher login dns --domain apipod.ai --private-key "$MCP_PRIVATE_KEY"
 
       - name: Publish server.json
         run: ./mcp-publisher publish
