@@ -231,11 +231,16 @@ brew install mcp-publisher
 mcp-publisher validate
 ```
 
-Verify the listing:
+Verify the listing — `search` is a substring match on the name, so the full
+`namespace/name` never matches it. Use the path form, URL-encoding the slash:
 
 ```bash
-curl "https://registry.modelcontextprotocol.io/v0.1/servers?search=ai.apipod/apipod"
+curl "https://registry.modelcontextprotocol.io/v0.1/servers/ai.apipod%2Fapipod/versions/latest"
 ```
+
+Before the first publish this returns `404`; afterwards it returns the record
+with `"name":"ai.apipod/apipod"`. To list every published version, drop
+`/versions/latest`.
 
 ## Pricing
 
