@@ -3,7 +3,7 @@
   "name": "ai.apipod/mcp",
   "title": "APIPod",
   "description": "Generate, edit and animate images and videos with top models through one APIPod account.",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "websiteUrl": "https://www.apipod.ai/agent",
   "icons": [
     {

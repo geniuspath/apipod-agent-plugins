@@ -187,7 +187,7 @@ Pushing a tag does it:
 
 ```bash
 # version in server.json and every manifest must equal the tag
-git tag v0.2.3 && git push origin v0.2.3
+git tag v0.2.4 && git push origin v0.2.4
 ```
 
 `.github/workflows/publish-mcp.yml` then verifies the tag against
